@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MOVA Valuation</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0a2b1e;
+    color: #e8e8ed;
+    line-height: 1.6;
+  }
+
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 60px 40px;
+    background: linear-gradient(135deg, #0a2b1e 0%, #12382a 50%, #0a2b1e 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(230, 252, 130, 0.06) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    padding: 8px 20px;
+    border: 1px solid rgba(50, 94, 85, 0.6);
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #e6fc82;
+    margin-bottom: 32px;
+  }
+
+  .hero h1 {
+    font-size: 72px;
+    font-weight: 800;
+    letter-spacing: -2px;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #e8e8ed, #e6fc82);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-subtitle {
+    font-size: 22px;
+    font-weight: 300;
+    color: #9bbfba;
+    margin-bottom: 48px;
+    max-width: 600px;
+  }
+
+  .hero-numbers {
+    display: flex;
+    gap: 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-stat {
+    text-align: center;
+  }
+
+  .hero-stat-value {
+    font-size: 48px;
+    font-weight: 700;
+    color: #e6fc82;
+    letter-spacing: -1px;
+  }
+
+  .hero-stat-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #88a28c;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  .section {
+    padding: 80px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    margin-bottom: 48px;
+  }
+
+  .section-number {
+    font-size: 13px;
+    font-weight: 600;
+    color: #e6fc82;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+
+  .section h2 {
+    font-size: 42px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+  }
+
+  .section-desc {
+    font-size: 17px;
+    color: #9bbfba;
+    max-width: 700px;
+    line-height: 1.7;
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(50, 94, 85, 0.4), transparent);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* Summary Cards */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .summary-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 32px;
+    transition: border-color 0.3s;
+  }
+
+  .summary-card:hover {
+    border-color: rgba(50, 94, 85, 0.5);
+  }
+
+  .summary-card-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #88a28c;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+
+  .summary-card-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: #e8e8ed;
+    letter-spacing: -0.5px;
+  }
+
+  .summary-card-value.highlight {
+    color: #e6fc82;
+  }
+
+  .summary-card-note {
+    font-size: 13px;
+    color: #88a28c;
+    margin-top: 8px;
+  }
+
+  /* Competition Section */
+  .comp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  .comp-box {
+    background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 36px;
+  }
+
+  .comp-box.highlight-box {
+    border-color: rgba(50, 94, 85, 0.5);
+    background: linear-gradient(135deg, rgba(50, 94, 85, 0.12), rgba(255,255,255,0.01));
+  }
+
+  .comp-box h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: #c4c4d0;
+  }
+
+  .comp-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 15px;
+  }
+
+  .comp-row:last-child { border-bottom: none; }
+
+  .comp-row .label { color: #9bbfba; }
+  .comp-row .value { font-weight: 600; }
+  .comp-row .value.green { color: #e6fc82; }
+  .comp-row .value.purple { color: #e6fc82; }
+
+  .comp-result {
+    margin-top: 32px;
+    padding: 24px;
+    background: rgba(50, 94, 85, 0.15);
+    border-radius: 12px;
+    text-align: center;
+  }
+
+  .comp-result-label {
+    font-size: 13px;
+    color: #e6fc82;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .comp-result-value {
+    font-size: 36px;
+    font-weight: 700;
+  }
+
+  /* Table Style */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 32px;
+  }
+
+  .data-table th {
+    text-align: left;
+    padding: 14px 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #608f87;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .data-table td {
+    padding: 16px 20px;
+    font-size: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    color: #c4c4d0;
+  }
+
+  .data-table tr:hover td {
+    background: rgba(255,255,255,0.02);
+  }
+
+  .data-table .value-col {
+    text-align: right;
+    font-weight: 600;
+    color: #e8e8ed;
+  }
+
+  .data-table .total-row td {
+    border-top: 2px solid rgba(50, 94, 85, 0.5);
+    font-weight: 700;
+    font-size: 17px;
+    color: #e6fc82;
+    padding-top: 20px;
+  }
+
+  /* Metric Bar */
+  .metric-bar-container {
+    margin-top: 32px;
+  }
+
+  .metric-bar-item {
+    margin-bottom: 24px;
+  }
+
+  .metric-bar-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .metric-bar-label {
+    font-size: 15px;
+    color: #c4c4d0;
+  }
+
+  .metric-bar-value {
+    font-size: 15px;
+    font-weight: 600;
+    color: #e8e8ed;
+  }
+
+  .metric-bar {
+    height: 8px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .metric-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #325e55, #e6fc82);
+    transition: width 1s ease;
+  }
+
+  /* Studios */
+  .studio-tier-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 32px;
+  }
+
+  .studio-tier-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 32px;
+    text-align: center;
+  }
+
+  .studio-tier-card.high { border-color: rgba(230, 252, 130, 0.3); }
+  .studio-tier-card.mid { border-color: rgba(50, 94, 85, 0.5); }
+  .studio-tier-card.low { border-color: rgba(136, 162, 140, 0.3); }
+
+  .tier-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+  }
+
+  .tier-label.high { color: #e6fc82; }
+  .tier-label.mid { color: #9bbfba; }
+  .tier-label.low { color: #88a28c; }
+
+  .tier-count {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .tier-unit {
+    font-size: 14px;
+    color: #88a28c;
+    margin-bottom: 16px;
+  }
+
+  .tier-price {
+    font-size: 14px;
+    color: #9bbfba;
+  }
+
+  .tier-price span {
+    font-weight: 600;
+    color: #c4c4d0;
+  }
+
+  .tier-total {
+    font-size: 22px;
+    font-weight: 700;
+    margin-top: 12px;
+  }
+
+  /* Tech */
+  .tech-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 32px;
+  }
+
+  .tech-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 32px;
+  }
+
+  .tech-card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin-bottom: 20px;
+    background: rgba(50, 94, 85, 0.25);
+  }
+
+  .tech-card-name {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .tech-card-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #e6fc82;
+  }
+
+  /* Influencer */
+  .influencer-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 32px;
+  }
+
+  .inf-stat-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+  }
+
+  .inf-stat-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: #e6fc82;
+  }
+
+  .inf-stat-label {
+    font-size: 12px;
+    color: #608f87;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 6px;
+  }
+
+  /* Digital */
+  .digital-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 32px;
+  }
+
+  .digital-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .digital-card-info h4 {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .digital-card-info p {
+    font-size: 14px;
+    color: #608f87;
+  }
+
+  .digital-card-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #e6fc82;
+  }
+
+  /* CTA */
+  .cta-section {
+    text-align: center;
+    padding: 100px 40px;
+    background: linear-gradient(135deg, #0a2b1e, #12382a, #0a2b1e);
+    position: relative;
+  }
+
+  .cta-section h2 {
+    font-size: 52px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #e8e8ed, #e6fc82);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .cta-subtitle {
+    font-size: 20px;
+    color: #9bbfba;
+    margin-bottom: 48px;
+  }
+
+  .ask-box {
+    display: inline-block;
+    padding: 24px 64px;
+    border: 2px solid rgba(230, 252, 130, 0.3);
+    border-radius: 16px;
+    background: rgba(50, 94, 85, 0.15);
+  }
+
+  .ask-label {
+    font-size: 13px;
+    color: #e6fc82;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+
+  .ask-value {
+    font-size: 56px;
+    font-weight: 800;
+    color: #e8e8ed;
+  }
+
+  .studio-note {
+    margin-top: 32px;
+    padding: 24px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    font-size: 14px;
+    color: #9bbfba;
+    line-height: 1.8;
+  }
+
+  .customers-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 32px;
+  }
+
+  .customer-highlight {
+    background: linear-gradient(135deg, rgba(50, 94, 85, 0.15), rgba(255,255,255,0.01));
+    border: 1px solid rgba(50, 94, 85, 0.4);
+    border-radius: 16px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .customer-highlight .big-number {
+    font-size: 64px;
+    font-weight: 800;
+    color: #e6fc82;
+    line-height: 1;
+  }
+
+  .customer-highlight .big-label {
+    font-size: 15px;
+    color: #9bbfba;
+    margin-top: 12px;
+  }
+
+  .customer-details {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .customer-detail-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 24px;
+  }
+
+  .customer-detail-card h4 {
+    font-size: 14px;
+    color: #608f87;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .customer-detail-card .val {
+    font-size: 28px;
+    font-weight: 700;
+  }
+
+  .partnership-note {
+    margin-top: 24px;
+    padding: 24px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    font-size: 14px;
+    color: #9bbfba;
+    line-height: 1.8;
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Confidential Valuation</div>
+  <h1>MOVA</h1>
+  <p class="hero-subtitle">Strategic acquisition opportunity for FlexPass to consolidate Cape Town's fitness aggregator market.</p>
+  <div class="hero-numbers">
+    <div class="hero-stat">
+      <div class="hero-stat-value">R7.3M</div>
+      <div class="hero-stat-label">Total Assessed Value</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-value">R5.4M</div>
+      <div class="hero-stat-label">Asking Price</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-value">26%</div>
+      <div class="hero-stat-label">Below Valuation</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- SUMMARY -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">01 / Overview</div>
+    <h2>Asset Breakdown</h2>
+    <p class="section-desc">Six distinct asset categories contribute to MOVA's total assessed value of R7.3M.</p>
+  </div>
+
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="summary-card-label">Eliminating Competition</div>
+      <div class="summary-card-value">R2,926,483</div>
+      <div class="summary-card-note">40.1% of total value</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-card-label">Technology</div>
+      <div class="summary-card-value">R2,100,000</div>
+      <div class="summary-card-note">28.8% of total value</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-card-label">Acquihire</div>
+      <div class="summary-card-value">R1,350,000</div>
+      <div class="summary-card-note">18.5% of total value</div>
+    </div>
+  </div>
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="summary-card-label">Digital Footprint</div>
+      <div class="summary-card-value">R410,000</div>
+      <div class="summary-card-note">5.6% of total value</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-card-label">Studio Network</div>
+      <div class="summary-card-value">R316,000</div>
+      <div class="summary-card-note">4.3% of total value</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-card-label">Customers</div>
+      <div class="summary-card-value">R200,000</div>
+      <div class="summary-card-note">2.7% of total value</div>
+    </div>
+  </div>
+
+  <div class="metric-bar-container">
+    <div class="metric-bar-item">
+      <div class="metric-bar-header">
+        <span class="metric-bar-label">Eliminating Competition</span>
+        <span class="metric-bar-value">R2.93M</span>
+      </div>
+      <div class="metric-bar"><div class="metric-bar-fill" style="width: 100%"></div></div>
+    </div>
+    <div class="metric-bar-item">
+      <div class="metric-bar-header">
+        <span class="metric-bar-label">Technology</span>
+        <span class="metric-bar-value">R2.10M</span>
+      </div>
+      <div class="metric-bar"><div class="metric-bar-fill" style="width: 71.7%"></div></div>
+    </div>
+    <div class="metric-bar-item">
+      <div class="metric-bar-header">
+        <span class="metric-bar-label">Acquihire</span>
+        <span class="metric-bar-value">R1.35M</span>
+      </div>
+      <div class="metric-bar"><div class="metric-bar-fill" style="width: 46.1%"></div></div>
+    </div>
+    <div class="metric-bar-item">
+      <div class="metric-bar-header">
+        <span class="metric-bar-label">Digital Footprint</span>
+        <span class="metric-bar-value">R410K</span>
+      </div>
+      <div class="metric-bar"><div class="metric-bar-fill" style="width: 14%"></div></div>
+    </div>
+    <div class="metric-bar-item">
+      <div class="metric-bar-header">
+        <span class="metric-bar-label">Studio Network</span>
+        <span class="metric-bar-value">R316K</span>
+      </div>
+      <div class="metric-bar"><div class="metric-bar-fill" style="width: 10.8%"></div></div>
+    </div>
+    <div class="metric-bar-item">
+      <div class="metric-bar-header">
+        <span class="metric-bar-label">Customers</span>
+        <span class="metric-bar-value">R200K</span>
+      </div>
+      <div class="metric-bar"><div class="metric-bar-fill" style="width: 6.8%"></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- COMPETITION -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">02 / Competition</div>
+    <h2>Eliminating Competition</h2>
+    <p class="section-desc">Without MOVA in the market, FlexPass margins improve significantly. The value of removing a direct competitor is quantified over three years.</p>
+  </div>
+
+  <div class="comp-grid">
+    <div class="comp-box">
+      <h3>FlexPass with Competition</h3>
+      <div class="comp-row"><span class="label">Estimated Members</span><span class="value">500</span></div>
+      <div class="comp-row"><span class="label">Avg Customer Value</span><span class="value">R1,428/mo</span></div>
+      <div class="comp-row"><span class="label">Monthly Revenue</span><span class="value">R714,000</span></div>
+      <div class="comp-row"><span class="label">Avg Margin</span><span class="value">12.0%</span></div>
+      <div class="comp-row"><span class="label">Monthly Gross Profit</span><span class="value">R85,785</span></div>
+    </div>
+    <div class="comp-box highlight-box">
+      <h3>FlexPass without Competition</h3>
+      <div class="comp-row"><span class="label">Estimated Members</span><span class="value">500</span></div>
+      <div class="comp-row"><span class="label">Avg Customer Value</span><span class="value">R1,428/mo</span></div>
+      <div class="comp-row"><span class="label">Monthly Revenue</span><span class="value">R714,000</span></div>
+      <div class="comp-row"><span class="label">Avg Margin</span><span class="value purple">23.4%</span></div>
+      <div class="comp-row"><span class="label">Monthly Gross Profit</span><span class="value green">R167,076</span></div>
+    </div>
+  </div>
+
+  <div class="comp-result">
+    <div class="comp-result-label">Gross Profit Increase Without Competition</div>
+    <div class="comp-result-value" style="color: #e6fc82;">+94.8%</div>
+    <p style="margin-top: 12px; font-size: 15px; color: #9bbfba;">3-Year Value: <strong style="color: #e8e8ed;">R2,926,483</strong></p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ACQUIHIRE -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">03 / Team</div>
+    <h2>Acquihire</h2>
+    <p class="section-desc">MOVA's team members are under restraint of trade. Releasing them to FlexPass is treated as a headhunter fee at standard South African executive recruitment rates.</p>
+  </div>
+
+  <div class="comp-grid">
+    <div class="comp-box">
+      <h3>Calculation Basis</h3>
+      <div class="comp-row"><span class="label">Headhunter Rate</span><span class="value">25% of first year salary</span></div>
+      <div class="comp-row"><span class="label">Avg Market Salary</span><span class="value">R1,800,000/yr</span></div>
+      <div class="comp-row"><span class="label">Fee per Team Member</span><span class="value">R450,000</span></div>
+      <div class="comp-row"><span class="label">Team Members</span><span class="value">3</span></div>
+    </div>
+    <div class="comp-box highlight-box" style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+      <div class="comp-result-label">Total Acquihire Value</div>
+      <div class="comp-result-value" style="color: #e6fc82; font-size: 48px;">R1,350,000</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- STUDIOS -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">04 / Studios</div>
+    <h2>Studio Network</h2>
+    <p class="section-desc">MOVA has a larger studio network than FlexPass, with several key exclusive studios. Acquiring MOVA eliminates competition for studio partnerships and expands FlexPass's offering.</p>
+  </div>
+
+  <div class="studio-tier-grid">
+    <div class="studio-tier-card high">
+      <div class="tier-label high">High Tier</div>
+      <div class="tier-count">12</div>
+      <div class="tier-unit">studios</div>
+      <div class="tier-price">at <span>R8,000</span> per studio</div>
+      <div class="tier-total" style="color: #e6fc82;">R96,000</div>
+    </div>
+    <div class="studio-tier-card mid">
+      <div class="tier-label mid">Mid Tier</div>
+      <div class="tier-count">26</div>
+      <div class="tier-unit">studios</div>
+      <div class="tier-price">at <span>R6,000</span> per studio</div>
+      <div class="tier-total" style="color: #e6fc82;">R156,000</div>
+    </div>
+    <div class="studio-tier-card low">
+      <div class="tier-label low">Low Tier</div>
+      <div class="tier-count">16</div>
+      <div class="tier-unit">studios</div>
+      <div class="tier-price">at <span>R4,000</span> per studio</div>
+      <div class="tier-total" style="color: #88a28c;">R64,000</div>
+    </div>
+  </div>
+
+  <div class="comp-result" style="margin-top: 32px;">
+    <div class="comp-result-label">Total Studio Network Value</div>
+    <div class="comp-result-value" style="color: #e6fc82;">R316,000</div>
+    <p style="margin-top: 8px; font-size: 15px; color: #9bbfba;">54 studios across 3 tiers</p>
+  </div>
+
+  <div class="studio-note">
+    <strong style="color: #c4c4d0;">Studio Tier Classification:</strong> Studios were categorized into High, Mid, and Low tiers using a weighted assessment of several key factors, including: class supply and frequency of sessions offered on the platform; customer demand and engagement within the MOVA ecosystem; brand strength and recognition within the Cape Town boutique fitness market; depth and longevity of MOVA's partnership relationship with each studio; availability of professional content assets produced through MOVA (studio shoots with professional photographers, models, and promotional media); and level of collaboration in MOVA community activations, campaigns, and platform initiatives. These factors were considered collectively to determine the relative strategic value of each studio within the MOVA network.
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- CUSTOMERS -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">05 / Customers</div>
+    <h2>Customer Base</h2>
+    <p class="section-desc">MOVA's user base of 1,000+ can be converted to FlexPass through a targeted email campaign. FlexPass pays a fee per successful conversion.</p>
+  </div>
+
+  <div class="customers-layout">
+    <div class="customer-highlight">
+      <div class="big-number">1,000+</div>
+      <div class="big-label">Total MOVA Users</div>
+    </div>
+    <div class="customer-details">
+      <div class="customer-detail-card">
+        <h4>Fee per Conversion</h4>
+        <div class="val">R1,000</div>
+      </div>
+      <div class="customer-detail-card">
+        <h4>Estimated Conversions</h4>
+        <div class="val">200</div>
+      </div>
+      <div class="customer-detail-card">
+        <h4>Total Estimated Value</h4>
+        <div class="val" style="color: #e6fc82;">R200,000</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- TECHNOLOGY -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">06 / Technology</div>
+    <h2>Technology Stack</h2>
+    <p class="section-desc">MOVA's technology represents significant development investment. The app and studio integrations are valued at cost to build.</p>
+  </div>
+
+  <div class="tech-grid">
+    <div class="tech-card">
+      <div class="tech-card-icon">📱</div>
+      <div class="tech-card-name">Mobile App</div>
+      <div style="font-size: 13px; color: #608f87; margin-bottom: 16px;">iOS + Android (App Store + Google Play)</div>
+      <div class="tech-card-value">R1,500,000</div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-card-icon">🔗</div>
+      <div class="tech-card-name">Octiv Integration</div>
+      <div style="font-size: 13px; color: #608f87; margin-bottom: 16px;">Studio management platform</div>
+      <div class="tech-card-value">R300,000</div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-card-icon">⚡</div>
+      <div class="tech-card-name">Itensity Integration</div>
+      <div style="font-size: 13px; color: #608f87; margin-bottom: 16px;">Scheduling + booking system</div>
+      <div class="tech-card-value">R300,000</div>
+    </div>
+  </div>
+
+  <div class="comp-result" style="margin-top: 32px;">
+    <div class="comp-result-label">Total Technology Value</div>
+    <div class="comp-result-value" style="color: #e6fc82;">R2,100,000</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- DIGITAL FOOTPRINT -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">07 / Digital</div>
+    <h2>Digital Footprint</h2>
+    <p class="section-desc">MOVA's web domain authority, social media followings, and AI marketing infrastructure can be redirected to strengthen FlexPass's digital presence.</p>
+  </div>
+
+  <div class="digital-grid">
+    <div class="digital-card">
+      <div class="digital-card-info">
+        <h4>Website Domain</h4>
+        <p>SEO authority + backlinks, redirect to FlexPass</p>
+      </div>
+      <div class="digital-card-value">R50,000</div>
+    </div>
+    <div class="digital-card">
+      <div class="digital-card-info">
+        <h4>Instagram</h4>
+        <p>2,700 followers at R20/follower</p>
+      </div>
+      <div class="digital-card-value">R54,000</div>
+    </div>
+    <div class="digital-card">
+      <div class="digital-card-info">
+        <h4>TikTok</h4>
+        <p>300 followers at R20/follower</p>
+      </div>
+      <div class="digital-card-value">R6,000</div>
+    </div>
+    <div class="digital-card">
+      <div class="digital-card-info">
+        <h4>AI Marketing Infrastructure</h4>
+        <p>Automated marketing systems + workflows</p>
+      </div>
+      <div class="digital-card-value">R300,000</div>
+    </div>
+  </div>
+
+  <div class="comp-result" style="margin-top: 32px;">
+    <div class="comp-result-label">Total Digital Footprint Value</div>
+    <div class="comp-result-value" style="color: #e6fc82;">R410,000</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- PARTNERSHIPS -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">08 / Partnerships</div>
+    <h2>Partnerships</h2>
+    <p class="section-desc">MOVA's established corporate and influencer partnerships provide immediate marketing infrastructure and revenue streams for the acquirer.</p>
+  </div>
+
+  <!-- Corporate -->
+  <div class="comp-box" style="margin-bottom: 32px;">
+    <h3>Corporate Partnership</h3>
+    <div class="comp-row"><span class="label">Partner</span><span class="value">Neighbourgood (NBGD)</span></div>
+    <div class="comp-row"><span class="label">Value</span><span class="value purple">R120,000</span></div>
+    <div style="margin-top: 16px; font-size: 14px; color: #9bbfba; line-height: 1.7;">Exclusive movement and wellness partner integrated into Neighbourgood's Wellness Worker membership, providing access to residents, coworking members, and community programming across all Cape Town properties.</div>
+  </div>
+
+  <!-- Influencer -->
+  <div class="comp-box highlight-box">
+    <h3>Influencer Network</h3>
+    <div class="influencer-grid" style="margin-top: 0;">
+      <div class="inf-stat-card">
+        <div class="inf-stat-value">15</div>
+        <div class="inf-stat-label">Active Partnerships</div>
+      </div>
+      <div class="inf-stat-card">
+        <div class="inf-stat-value">317K</div>
+        <div class="inf-stat-label">Combined Following</div>
+      </div>
+      <div class="inf-stat-card">
+        <div class="inf-stat-value">18</div>
+        <div class="inf-stat-label">Posts / Month</div>
+      </div>
+      <div class="inf-stat-card">
+        <div class="inf-stat-value">110</div>
+        <div class="inf-stat-label">Stories / Month</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="partnership-note">The MOVA influencer network generates roughly 700,000 monthly impressions across creator content. Using conservative South African social media CPM benchmarks, the annual media exposure significantly exceeds the assigned value. The R85,000 valuation represents a heavily discounted estimate of transferable asset value, reflecting replacement cost, time to build comparable relationships, and existing content distribution infrastructure within the Cape Town fitness community.</div>
+
+  <div class="comp-result" style="margin-top: 32px;">
+    <div class="comp-result-label">Total Partnership Value</div>
+    <div class="comp-result-value" style="color: #e6fc82;">R205,000</div>
+    <p style="margin-top: 8px; font-size: 14px; color: #9bbfba;">R120,000 corporate + R85,000 influencer</p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- CTA / ASK -->
+<div class="cta-section">
+  <h2>The Ask</h2>
+  <p class="cta-subtitle">Total assessed value of R7.3M, offered at a 26% discount.</p>
+  <div class="ask-box">
+    <div class="ask-label">Asking Price</div>
+    <div class="ask-value">R5,400,000</div>
+  </div>
+</div>
+
+</body>
+</html>
